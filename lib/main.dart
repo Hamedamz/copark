@@ -1,14 +1,68 @@
+import 'package:copark/settings/parse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:parse_server_sdk_flutter/generated/i18n.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    initData();
+  }
 
-  // This widget is the root of your application.
+  Future<void> initData() async {
+    // Initialize repository
+    // await initRepository();
+    // await initCoreStore();
+
+    // Initialize parse
+    await Parse().initialize(keyParseApplicationId, keyParseServerUrl,
+        // clientKey: keyParseClientKey,
+        debug: true,
+        coreStore: await CoreStoreSharedPrefsImp.getInstance());
+
+    //parse serve with secure store and desktop support
+
+    //    Parse().initialize(keyParseApplicationId, keyParseServerUrl,
+    //        clientKey: keyParseClientKey,
+    //        debug: true,
+    //        coreStore: CoreStoreSharedPrefsImp.getInstance());
+
+    // Check server is healthy and live - Debug is on in this instance so check logs for result
+    final ParseResponse response = await Parse().healthCheck();
+    var text = '';
+    if (response.success) {
+      text += 'runTestQueries\n';
+      print(text);
+    } else {
+      text += 'Server health check failed';
+      print(text);
+    }
+
+    final ParseUser? user1 = await ParseUser.currentUser();
+    print('User: $user1');
+
+
+
+    ParseUser user = ParseUser('ali2', 'password', 'alirtofighim2@gmail.com');
+    // user.verificationEmailRequest()
+    //
+    // // /// Sign-up
+    // // ParseResponse userResponse = await user.signUp();
+    // // if (userResponse.success) {
+    // //   user = userResponse.result;
+    // // }
+    //
+    // ParseResponse userResponse = await user.login();
+    //
+    // print(user);
+  }
+
   @override
   Widget build(BuildContext context) {
     // loc = AppLocalizations.of(context);
@@ -25,20 +79,27 @@ class MyApp extends StatelessWidget {
       ],
       locale: const Locale("fa", "IR"),
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
         fontFamily: 'Vazir',
       ),
-      home: const MyHomePage(title: 'کوپارک'),
+      initialRoute: '/',
+      routes: {
+        // When navigating to the "/" route, build the FirstScreen widget.
+        '/': (context) => const MyHomePage(title: 'کوپارک'),
+        '/2': (context) => const MyHomePage(title: 'کوپارک 2'),
+        // When navigating to the "/second" route, build the SecondScreen widget.
+        // '/second': (context) => const SecondScreen(),
+      },
     );
+  }
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State createState() {
+    return _MyAppState();
   }
 }
 

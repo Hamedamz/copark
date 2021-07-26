@@ -30,7 +30,7 @@ class LoginScreen extends StatelessWidget {
 
   Future<String?> _signUp(LoginData data) {
     return Future.delayed(loginTime).then((_) async {
-      ParseUser user = ParseUser(data.name, data.password, null); //TODO: email
+      ParseUser user = ParseUser(data.name, data.password, data.name);
       ParseResponse userResponse = await user.signUp();
       if (userResponse.success) {
           user = userResponse.result;
@@ -69,7 +69,7 @@ class LoginScreen extends StatelessWidget {
       // hideSignUpButton: true,
       // disableCustomPageTransformer: true,
       messages: LoginMessages(
-        userHint: 'کاربر',
+        userHint: 'ایمیل کاربری',
         passwordHint: 'رمز عبور',
         confirmPasswordHint: 'تایید',
         loginButton: 'ورود',
@@ -96,89 +96,11 @@ class LoginScreen extends StatelessWidget {
           fontFamily: 'Vazir',
           letterSpacing: 4,
         ),
-      // buttonTheme: LoginButtonTheme(
-      //   splashColor: Colors.purple,
-      //   backgroundColor: Colors.pinkAccent,
-      //   highlightColor: Colors.lightGreen,
-      //   elevation: 9.0,
-      //   highlightElevation: 6.0,
-      //   shape: BeveledRectangleBorder(
-      //     borderRadius: BorderRadius.circular(10),
-      //     ),
-      //   // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-      //   // shape: CircleBorder(side: BorderSide(color: Colors.green)),
-      //   // shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(55.0)),
-      //   ),
       ),
-      //   // beforeHeroFontSize: 50,
-      //   // afterHeroFontSize: 20,
-      //   bodyStyle: TextStyle(
-      //     fontStyle: FontStyle.italic,
-      //     decoration: TextDecoration.underline,
-      //   ),
-      //   textFieldStyle: TextStyle(
-      //     color: Colors.orange,
-      //     shadows: [Shadow(color: Colors.yellow, blurRadius: 2)],
-      //   ),
-      //   buttonStyle: TextStyle(
-      //     fontWeight: FontWeight.w800,
-      //     color: Colors.yellow,
-      //   ),
-      //   cardTheme: CardTheme(
-      //     color: Colors.yellow.shade100,
-      //     elevation: 5,
-      //     margin: EdgeInsets.only(top: 15),
-      //     shape: ContinuousRectangleBorder(
-      //         borderRadius: BorderRadius.circular(100.0)),
-      //   ),
-      //   inputTheme: InputDecorationTheme(
-      //     filled: true,
-      //     fillColor: Colors.purple.withOpacity(.1),
-      //     contentPadding: EdgeInsets.zero,
-      //     errorStyle: TextStyle(
-      //       backgroundColor: Colors.orange,
-      //       color: Colors.white,
-      //     ),
-      //     labelStyle: TextStyle(fontSize: 12),
-      //     enabledBorder: UnderlineInputBorder(
-      //       borderSide: BorderSide(color: Colors.blue.shade700, width: 4),
-      //       borderRadius: inputBorder,
-      //     ),
-      //     focusedBorder: UnderlineInputBorder(
-      //       borderSide: BorderSide(color: Colors.blue.shade400, width: 5),
-      //       borderRadius: inputBorder,
-      //     ),
-      //     errorBorder: UnderlineInputBorder(
-      //       borderSide: BorderSide(color: Colors.red.shade700, width: 7),
-      //       borderRadius: inputBorder,
-      //     ),
-      //     focusedErrorBorder: UnderlineInputBorder(
-      //       borderSide: BorderSide(color: Colors.red.shade400, width: 8),
-      //       borderRadius: inputBorder,
-      //     ),
-      //     disabledBorder: UnderlineInputBorder(
-      //       borderSide: BorderSide(color: Colors.grey, width: 5),
-      //       borderRadius: inputBorder,
-      //     ),
-      //   ),
-      //   buttonTheme: LoginButtonTheme(
-      //     splashColor: Colors.purple,
-      //     backgroundColor: Colors.pinkAccent,
-      //     highlightColor: Colors.lightGreen,
-      //     elevation: 9.0,
-      //     highlightElevation: 6.0,
-      //     shape: BeveledRectangleBorder(
-      //       borderRadius: BorderRadius.circular(10),
-      //     ),
-      //     // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-      //     // shape: CircleBorder(side: BorderSide(color: Colors.green)),
-      //     // shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(55.0)),
-      //   ),
-      // ),
       userValidator: (value) {
-        // if (!value!.contains('@')) {
-        //   return "ایمیل نامعتبر";
-        // }
+        if (!value!.contains('@')) {
+          return "ایمیل نامعتبر";
+        }
         return null;
       },
       passwordValidator: (value) {

@@ -83,6 +83,8 @@ flutter:
     - assets/images/ecorp.png
     - assets/images/ecorp-lightblue.png
     - assets/images/ecorp-lightgreen.png
+    - assets/images/car-top-view.png
+    - assets/images/car-top-view-grey.png
 
   fonts:
     - family: Vazir

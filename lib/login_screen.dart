@@ -47,11 +47,13 @@ class LoginScreen extends StatelessWidget {
   }
 
   Future<String?> _recoverPassword(String name) {
-    return Future.delayed(loginTime).then((_) {
-      if (!mockUsers.containsKey(name)) {
-        return 'کاربر وجود ندارد';
+    return Future.delayed(loginTime).then((_) async {
+      ParseUser user = ParseUser(null, null, name);
+      ParseResponse response = await user.requestPasswordReset();
+      if (response.success) {
+        return null;
       }
-      return null;
+      return 'بازنشانی رمز عبور موفق نبود.';
     });
   }
 

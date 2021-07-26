@@ -1,3 +1,4 @@
+import 'package:copark/data/model/auction.dart';
 import 'package:copark/settings/parse.dart';
 import 'package:copark/user_model.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +46,15 @@ class _MyAppState extends State<MyApp> {
     }
 
     UserModel.user = await ParseUser.currentUser();
+    final query = QueryBuilder<Auction>(Auction())
+      ..whereEqualTo(keyAuctionStatus, 'new');
+    var x = await query.query();
+    if (x.success && x.count > 0) {
+      Auction auction = x.result.first;
+      print('Auctions: ${auction.minimumPrice}');
+    } else {
+      print('No Auctions');
+    }
   }
 
   @override

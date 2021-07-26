@@ -1,12 +1,15 @@
+import 'package:copark/data/db.dart';
 import 'package:copark/data/model/auction.dart';
+import 'package:copark/data/repositories/auction/repository_auction.dart';
 import 'package:copark/settings/parse.dart';
-import 'package:copark/user_model.dart';
+import 'package:copark/static_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:parse_server_sdk_flutter/generated/i18n.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:flutter/services.dart';
 import 'dashboard_screen.dart';
+import 'data/model/offer.dart';
 import 'login_screen.dart';
 import 'transition_route_observer.dart';
 import 'dashboard_screen.dart';
@@ -45,21 +48,18 @@ class _MyAppState extends State<MyApp> {
       print(text);
     }
 
-    UserModel.user = await ParseUser.currentUser();
-    final query = QueryBuilder<Auction>(Auction())
-      ..whereEqualTo(keyAuctionStatus, 'new');
-    var x = await query.query();
-    if (x.success && x.count > 0) {
-      Auction auction = x.result.first;
-      print('Auctions: ${auction.minimumPrice}');
-    } else {
-      print('No Auctions');
-    }
+    StaticModels.user = ParseUser('alirtofighim@gmail.com', '1234567', null);
+    await StaticModels.user!.login();
+
+    print(StaticModels.user);
+    await initRepository();
+    print(StaticModels.auctionRepo);
+    print(StaticModels.auctionRepo!.getNew());
   }
 
   @override
   Widget build(BuildContext context) {
-    if (UserModel.user == null) {
+    if (StaticModels.user == null) {
       return MaterialApp(
         title: 'ورود',
         localizationsDelegates: const [
@@ -171,6 +171,10 @@ class _MyAppState extends State<MyApp> {
         },
       );
     }
+  }
+
+  Future<void> initRepository() async {
+    StaticModels.auctionRepo ??= AuctionRepository.init(await getDB());
   }
 }
 

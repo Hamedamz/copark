@@ -1,4 +1,4 @@
-import 'package:copark/user_model.dart';
+import 'package:copark/static_models.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
@@ -19,7 +19,7 @@ class LoginScreen extends StatelessWidget {
       ParseUser user = ParseUser(data.name, data.password, null);
       ParseResponse response = await user.login();
       if (response.success) {
-        UserModel.user = user;
+        StaticModels.user = user;
         return null;
       }
       else {
@@ -37,7 +37,7 @@ class LoginScreen extends StatelessWidget {
         }
       ParseResponse response = await user.login();
       if (response.success) {
-        UserModel.user = user;
+        StaticModels.user = user;
         return null;
       }
       else {

@@ -33,15 +33,18 @@ class AppState extends State<App> {
         currentIndex: _currentTab,
         items: [
           BottomNavigationBarItem(
-            icon: const Icon(Icons.settings),
+            icon: const Icon(Icons.settings_outlined),
+            activeIcon: const Icon(Icons.settings),
             label: AppLocalizations.of(context)!.bottomNavigationAdmin,
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.home),
+            icon: const Icon(Icons.home_outlined),
+            activeIcon: const Icon(Icons.home),
             label: AppLocalizations.of(context)!.bottomNavigationHome,
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.account_circle),
+            icon: const Icon(Icons.account_circle_outlined),
+            activeIcon: const Icon(Icons.account_circle),
             label: AppLocalizations.of(context)!.bottomNavigationProfile,
           ),
         ],

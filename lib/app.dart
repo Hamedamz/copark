@@ -12,7 +12,8 @@ class App extends StatefulWidget {
 }
 
 class AppState extends State<App> {
-  var _currentTab = 0;
+  // todo if admin 1 else 0
+  var _currentTab = 1;
 
   final List<Widget> _children = [
     const AdminPage(),

@@ -1,13 +1,13 @@
+import 'package:copark/app.dart';
 import 'package:copark/user_model.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
-import 'constants.dart';
-import 'custom_route.dart';
-import 'dashboard_screen.dart';
-import 'users.dart';
+import '../constants.dart';
+import '../custom_route.dart';
+import '../users.dart';
 
 class LoginScreen extends StatelessWidget {
   static const routeName = '/auth';
@@ -69,7 +69,7 @@ class LoginScreen extends StatelessWidget {
       // hideSignUpButton: true,
       // disableCustomPageTransformer: true,
       messages: LoginMessages(
-        userHint: 'ایمیل کاربری',
+        userHint: 'ایمیل',
         passwordHint: 'رمز عبور',
         confirmPasswordHint: 'تایید',
         loginButton: 'ورود',
@@ -86,16 +86,11 @@ class LoginScreen extends StatelessWidget {
       ),
       theme: LoginTheme(
         primaryColor: Colors.blueAccent,
-        accentColor: Colors.yellow,
-        errorColor: Colors.deepOrange,
-        pageColorLight: Colors.indigo.shade300,
-        pageColorDark: Colors.indigo.shade500,
+        accentColor: Colors.pink,
+        errorColor: Colors.red.shade600,
+        pageColorLight: Colors.blue.shade400,
+        pageColorDark: Colors.indigoAccent,
         logoWidth: 0.80,
-        titleStyle: const TextStyle(
-          color: Colors.greenAccent,
-          fontFamily: 'Vazir',
-          letterSpacing: 4,
-        ),
       ),
       userValidator: (value) {
         if (!value!.contains('@')) {
@@ -123,7 +118,7 @@ class LoginScreen extends StatelessWidget {
       },
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(FadePageRoute(
-          builder: (context) => DashboardScreen(),
+          builder: (context) => const App(),
         ));
       },
       onRecoverPassword: (name) {

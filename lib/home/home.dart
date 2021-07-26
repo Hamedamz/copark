@@ -1,3 +1,4 @@
+import 'package:copark/home/auction.dart';
 import 'package:copark/home/info_with_reservation.dart';
 import 'package:copark/home/info_without_reservation.dart';
 import 'package:flutter/material.dart';
@@ -18,9 +19,14 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0,),
-      body: _hasParking ?
-        InfoWithReservation(parkingNumber: _parkingNumber) :
-        const InfoWithoutReservation(),
+      body: Column(
+        children: [
+          _hasParking ?
+          InfoWithReservation(parkingNumber: _parkingNumber) :
+          const InfoWithoutReservation(),
+          const AuctionPage(),
+        ],
+      )
     );
   }
 }

@@ -16,9 +16,9 @@ class AppState extends State<App> {
   var _currentTab = 1;
 
   final List<Widget> _children = [
-    const AdminPage(),
-    const HomePage(),
-    const ProfilePage()
+    AdminPage(),
+    HomePage(),
+    ProfilePage()
   ];
 
   void _selectTab(int index) {

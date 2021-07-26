@@ -2,5 +2,17 @@
     "coPark": "کو پارک",
     "@coPark": {
       "description": "App title :)"
+    },
+    "bottomNavigationHome": "خانه",
+    "@bottomNavigationHome": {
+      "description": "bottom navigation home"
+    },
+    "bottomNavigationProfile": "پروفایل",
+    "@bottomNavigationProfile": {
+      "description": "bottom navigation profile"
+    },
+    "bottomNavigationAdmin": "ادمین",
+    "@bottomNavigationAdmin": {
+      "description": "bottom navigation admin"
     }
 }

@@ -13,12 +13,11 @@ class App extends StatefulWidget {
 
 class AppState extends State<App> {
   // todo if admin 1 else 0
-  var _currentTab = 1;
+  var _currentTab = 0;
 
   final List<Widget> _children = [
-    AdminPage(),
+    // AdminPage(),
     HomePage(),
-    ProfilePage()
   ];
 
   void _selectTab(int index) {
@@ -29,27 +28,27 @@ class AppState extends State<App> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _children[_currentTab],
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: _selectTab,
-        currentIndex: _currentTab,
-        items: [
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.settings_outlined),
-            activeIcon: const Icon(Icons.settings),
-            label: AppLocalizations.of(context)!.bottomNavigationAdmin,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.home_outlined),
-            activeIcon: const Icon(Icons.home),
-            label: AppLocalizations.of(context)!.bottomNavigationHome,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.account_circle_outlined),
-            activeIcon: const Icon(Icons.account_circle),
-            label: AppLocalizations.of(context)!.bottomNavigationProfile,
-          ),
-        ],
-      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   onTap: _selectTab,
+      //   currentIndex: _currentTab,
+      //   items: [
+      //     BottomNavigationBarItem(
+      //       icon: const Icon(Icons.settings_outlined),
+      //       activeIcon: const Icon(Icons.settings),
+      //       label: AppLocalizations.of(context)!.bottomNavigationAdmin,
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: const Icon(Icons.home_outlined),
+      //       activeIcon: const Icon(Icons.home),
+      //       label: AppLocalizations.of(context)!.bottomNavigationHome,
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: const Icon(Icons.account_circle_outlined),
+      //       activeIcon: const Icon(Icons.account_circle),
+      //       label: AppLocalizations.of(context)!.bottomNavigationProfile,
+      //     ),
+      //   ],
+      // ),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:copark/admin/admin.dart';
 import 'package:copark/home/auction.dart';
 import 'package:copark/home/info_with_reservation.dart';
 import 'package:copark/home/info_without_reservation.dart';
@@ -34,10 +35,30 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void _onAdminPressed() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+
+          return AdminPage();
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0,),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          IconButton(
+              onPressed: _onAdminPressed,
+              icon: Icon(Icons.settings)
+          )
+        ],
+      ),
       body: Column(
         children: [
           _hasParking ?

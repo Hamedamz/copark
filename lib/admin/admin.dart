@@ -1,8 +1,5 @@
-import 'package:copark/data/api/api_response.dart';
-import 'package:copark/data/model/settings.dart';
-import 'package:copark/static_models.dart';
+import 'package:copark/admin/auction_settings.dart';
 import 'package:flutter/material.dart';
-import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class AdminPage extends StatefulWidget {
   const AdminPage({Key? key}) : super(key: key);
@@ -12,30 +9,41 @@ class AdminPage extends StatefulWidget {
 }
 
 class _AdminPageState extends State<AdminPage> {
-  Settings? settings;
 
   @override
   Widget build(BuildContext context) {
-    prepareSettings();
-    return Scaffold(
-        body: Center(
-      child: Column(children: [
-        Text(
-            'حداقل قیمت: ${settings == null ? 0 : settings!.minimumPrice}   ریال'),
-        Text('تعداد پارکینگ‌ها: ${settings == null ? 0 : settings!.parkCount}')
-      ]),
-    ));
-  }
-
-  void showSettings(Settings settings) {
-    settings.pin();
-    setState(() {
-      this.settings = settings;
-    });
-  }
-
-  void prepareSettings() {
-    Future<ApiResponse> response = StaticModels.settingsRepo!.get();
-    response.then((value) => {showSettings(value.result)});
+    return DefaultTabController(
+      initialIndex: 0,
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('مدیریت'),
+          bottom: const TabBar(
+            tabs: <Widget>[
+              Tab(
+                text: 'مزایده'
+              ),
+              Tab(
+                text: 'کاربران'
+              ),
+              Tab(
+                text: 'پیشنهادات'
+              ),
+            ],
+          ),
+        ),
+        body: const TabBarView(
+          children: <Widget>[
+            AuctionSettings(),
+            Center(
+              child: Text("It's rainy here"),
+            ),
+            Center(
+              child: Text("It's sunny here"),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

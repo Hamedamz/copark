@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class InfoWithoutReservation extends StatelessWidget {
-  const InfoWithoutReservation({Key? key}) : super(key: key);
+  const InfoWithoutReservation({Key? key, required this.onFindPressed}) : super(key: key);
 
+  final void Function() onFindPressed;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -11,7 +12,7 @@ class InfoWithoutReservation extends StatelessWidget {
                 children: [
                   const Text('در این دوره پارکینگی را رزرو نکرده‌اید.'),
                   MaterialButton(
-                    onPressed: () => Navigator.of(context).pushNamed('/find_parking'),
+                    onPressed: onFindPressed,
                     child: const Text('یافتن پارکینگ خالی'),
                   )
                 ]

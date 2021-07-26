@@ -1,3 +1,4 @@
+import 'package:copark/home/parking.dart';
 import 'package:copark/data/db.dart';
 import 'package:copark/data/model/auction.dart';
 import 'package:copark/data/repositories/auction/repository_auction.dart';
@@ -34,6 +35,10 @@ final routes = [
       route: '/auth',
       builder: (context) => LoginScreen()
   ),
+  RoutePage(
+      route: '/find_parking',
+      builder: (context) => Parking()
+  )
 ];
 
 class MyApp extends StatefulWidget {

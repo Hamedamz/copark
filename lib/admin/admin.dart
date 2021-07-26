@@ -17,8 +17,17 @@ class _AdminPageState extends State<AdminPage> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('مدیریت'),
+          backgroundColor: Colors.white,
+          iconTheme: const IconThemeData(
+            color: Colors.blue,
+          ),
+          titleTextStyle: const TextStyle(color: Colors.blue),
+          title: const Text(
+              'مدیریت',
+              style: TextStyle(color: Colors.blue),
+          ),
           bottom: const TabBar(
+            labelColor: Colors.blue,
             tabs: <Widget>[
               Tab(
                 text: 'مزایده'

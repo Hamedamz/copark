@@ -1,12 +1,16 @@
+import 'package:copark/data/db.dart';
+import 'package:copark/data/model/auction.dart';
+import 'package:copark/data/repositories/auction/repository_auction.dart';
 import 'package:copark/settings/parse.dart';
-import 'package:copark/user_model.dart';
 import 'package:copark/app.dart';
+import 'package:copark/static_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:parse_server_sdk_flutter/generated/i18n.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:flutter/services.dart';
 import 'account/login_screen.dart';
+import 'data/model/offer.dart';
 import 'transition_route_observer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -64,7 +68,13 @@ class _MyAppState extends State<MyApp> {
       print(text);
     }
 
-    UserModel.user = await ParseUser.currentUser();
+    StaticModels.user = ParseUser('alirtofighim@gmail.com', '1234567', null);
+    await StaticModels.user!.login();
+
+    print(StaticModels.user);
+    await initRepository();
+    print(StaticModels.auctionRepo);
+    print(StaticModels.auctionRepo!.getNew());
   }
 
   @override
@@ -86,9 +96,13 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
       ),
       navigatorObservers: [TransitionRouteObserver()],
-      initialRoute: UserModel.user == null ? '/auth' : '/dashboard',
+      initialRoute: StaticModels.user == null ? '/auth' : '/dashboard',
       routes: Map.fromEntries(routes.map((r) => MapEntry(r.route, r.builder))),
     );
+  }
+
+  Future<void> initRepository() async {
+    StaticModels.auctionRepo ??= AuctionRepository.init(await getDB());
   }
 }
 

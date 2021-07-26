@@ -1,4 +1,5 @@
-import 'package:copark/account/login.dart';
+import 'package:copark/account/login_form.dart';
+import 'package:copark/account/signup_page.dart';
 import 'package:copark/app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -11,7 +12,7 @@ void main() {
 final routes = [
   RoutePage(
     route: '/',
-    builder: (context) => App()
+    builder: (context) => const App(),
   ),
   RoutePage(
     route: '/login',
@@ -19,7 +20,7 @@ final routes = [
   ),
   RoutePage(
     route: '/signup',
-    builder: (context) => const LoginForm(),
+    builder: (context) => const SignUpForm(),
   ),
 ];
 

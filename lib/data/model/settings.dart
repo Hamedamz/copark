@@ -2,14 +2,14 @@ import 'dart:core';
 
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
-const String keyParkPlace = 'ParkPlace';
+const String keySettings = 'Settings';
 const String keyMinimumPrice = 'minimumPrice';
 const String keyParkCount = 'parkCount';
 const String keyAuctionNewDays = 'auctionNewDays';
 const String keyAuctionInprogressDays = 'auctionInprogressDays';
 
 class Settings extends ParseObject implements ParseCloneable {
-  Settings() : super(keyParkPlace);
+  Settings() : super(keySettings);
 
   Settings.clone() : this();
 

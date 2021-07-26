@@ -1,11 +1,12 @@
-import 'package:copark/user_model.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import '../app.dart';
 import '../constants.dart';
 import '../custom_route.dart';
+import '../static_models.dart';
 import '../users.dart';
 
 class LoginScreen extends StatelessWidget {

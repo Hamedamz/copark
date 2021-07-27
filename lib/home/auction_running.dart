@@ -1,7 +1,12 @@
+import 'package:copark/data/model/offer.dart';
+import 'package:copark/static_models.dart';
 import 'package:flutter/material.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class AuctionRunning extends StatelessWidget {
-  const AuctionRunning({Key? key}) : super(key: key);
+  AuctionRunning({Key? key}) : super(key: key);
+
+  final myController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +20,7 @@ class AuctionRunning extends StatelessWidget {
           const Text('مبلغ پیشنهادی خود را وارد کنید'),
           const SizedBox(height: 20),
           TextFormField(
+            controller: myController,
             restorationId: 'bid',
             textInputAction: TextInputAction.go,
             keyboardType: TextInputType.number,
@@ -27,7 +33,7 @@ class AuctionRunning extends StatelessWidget {
           MaterialButton(
             color: Colors.blue,
             onPressed: () => {
-              //todo participate in auction
+              offerBid(myController.text)
             },
             minWidth: 400,
             elevation: 0,
@@ -36,5 +42,14 @@ class AuctionRunning extends StatelessWidget {
             child: const Text('شرکت در مزایده'),
           )
         ]));
+  }
+
+  Future<void> offerBid(String text) async {
+    Offer offer = Offer();
+    offer.price = int.parse(text);
+    offer.user = StaticModels.user!;
+    offer.auction = StaticModels.newAuction!;
+
+    ParseResponse response = await offer.save();
   }
 }

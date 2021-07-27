@@ -19,8 +19,8 @@ class Offer extends ParseObject implements ParseCloneable {
   ParseUser get user => get<ParseUser>(keyUser)!;
   set user(ParseUser user) => set<ParseUser>(keyUser, user);
 
-  num get price => get<num>(keyPrice)!;
-  set price(num price) => set<num>(keyPrice, price);
+  int get price => get<int>(keyPrice)!;
+  set price(int price) => set<int>(keyPrice, price);
 
   Auction get auction => get<Auction>(keyAuction)!;
   set auction(Auction auction) => set<Auction>(keyAuction, auction);

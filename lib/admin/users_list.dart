@@ -1,5 +1,8 @@
+import 'package:copark/data/model/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../static_models.dart';
 
 class UsersList extends StatefulWidget {
   const UsersList({Key? key}) : super(key: key);
@@ -9,21 +12,37 @@ class UsersList extends StatefulWidget {
 }
 
 class _UsersListState extends State<UsersList> {
-  final _saved = <UserInfo>{};     // NEW
+  final pageSize = 10;
+  bool isLoading = false;
 
-  final List<UserInfo> _users = [
-    UserInfo(email: 'email'),
-    UserInfo(email: 'email'),
-    UserInfo(email: 'email'),
-    UserInfo(email: 'email'),
-    UserInfo(email: 'email'),
-    UserInfo(email: 'email'),
-    UserInfo(email: 'email'),
-  ];
+  final List<User> _users = [];
 
   final textStyle = const TextStyle(color: Colors.white);
 
-  Widget _buildParkingCols() {
+  @override
+  void initState() {
+    super.initState();
+    initUsers();
+  }
+
+  Future _loadData() async {
+    final response = await StaticModels.userRepo?.all(_users.length, pageSize);
+    if (response != null && response.success && response.count > 0) {
+      for (var user in response.results!) {
+        _users.add(user);
+      }
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  void initUsers() async {
+    isLoading = true;
+    _loadData();
+  }
+
+  Widget _buildUsersList() {
     return ListView.separated(
       padding: const EdgeInsets.all(16.0),
       itemCount: _users.length,
@@ -37,21 +56,16 @@ class _UsersListState extends State<UsersList> {
   }
 
   Widget _buildUser(int index) {
-    final alreadySaved = _saved.contains(_users[index]);
-
     return ListTile(
-      title: Text(_users[index].email),
+      title: Text(_users[index].username ?? ''),
       trailing: Switch(
         onChanged: (value) => {},
-        value: alreadySaved,
+        value: _users[index].isActive,
       ),
       onTap: () {
         setState(() {
-          if (alreadySaved) {
-            _saved.remove(_users[index]);
-          } else {
-            _saved.add(_users[index]);
-          }
+          _users[index].isActive = !_users[index].isActive;
+          _users[index].save();
         });
       },
     );
@@ -59,14 +73,25 @@ class _UsersListState extends State<UsersList> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: _buildParkingCols(),
+    if (_users.isEmpty) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    return NotificationListener<ScrollNotification>(
+      onNotification: (ScrollNotification scrollInfo) {
+        if (!isLoading &&
+            scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+          _loadData();
+          // start loading data
+          setState(() {
+            isLoading = true;
+          });
+          return true;
+        }
+        return true;
+      },
+      child: _buildUsersList(),
     );
   }
-}
-
-class UserInfo {
-  UserInfo({required this.email});
-
-  String email;
 }

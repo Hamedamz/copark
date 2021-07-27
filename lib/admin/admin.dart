@@ -1,4 +1,5 @@
 import 'package:copark/admin/auction_settings.dart';
+import 'package:copark/admin/users_list.dart';
 import 'package:flutter/material.dart';
 
 class AdminPage extends StatefulWidget {
@@ -44,9 +45,7 @@ class _AdminPageState extends State<AdminPage> {
         body: const TabBarView(
           children: <Widget>[
             AuctionSettings(),
-            Center(
-              child: Text("It's rainy here"),
-            ),
+            UsersList(),
             Center(
               child: Text("It's sunny here"),
             ),

@@ -1,11 +1,14 @@
 import 'package:copark/account/login_screen.dart';
 import 'package:copark/admin/admin.dart';
+import 'package:copark/data/state/auction.dart';
 import 'package:copark/home/auction.dart';
 import 'package:copark/home/info_with_reservation.dart';
 import 'package:copark/home/info_without_reservation.dart';
 import 'package:copark/home/parking.dart';
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:provider/provider.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -57,7 +60,7 @@ class _HomePageState extends State<HomePage> {
           return const LoginScreen();
         },
       ),
-        (route) => false,
+          (route) => false,
     );
   }
 
@@ -99,50 +102,54 @@ class _HomePageState extends State<HomePage> {
         child: CircularProgressIndicator(),
       );
     }
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          actions: [
-            if (_isAdmin)
-              IconButton(onPressed: _onAdminPressed, icon: Icon(Icons.settings)),
-            IconButton(onPressed: _onLogoutPressed, icon: Icon(Icons.logout)),
-          ],
-        ),
-        backgroundColor: Colors.blue,
-        body: Container(
-          child: Scrollbar(
-              child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(20),
-                        child: _hasParking
-                            ? InfoWithReservation(parkingNumber: _parkingNumber)
-                            : InfoWithoutReservation(
-                          onFindPressed: _onFindPressed,
-                        ),
-                      ),
-
-                      Container(
-                          decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(40.0),
-                                  topRight: Radius.circular(40.0))),
-                          child: Column(
-                            children: [
-                              const AuctionPage(),
-                              const SizedBox(height: 500)
-                            ],
-                          )
-                      )
-                    ],
-                  )
-              )
-          ),
-        )
-
-    );
+    return ChangeNotifierProvider(
+        create: (BuildContext context) {
+          return AuctionModel();
+        },
+        child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              actions: [
+                if (_isAdmin)
+                  IconButton(
+                      onPressed: _onAdminPressed, icon: Icon(Icons.settings)),
+                IconButton(
+                    onPressed: _onLogoutPressed, icon: Icon(Icons.logout)),
+              ],
+            ),
+            backgroundColor: Colors.blue,
+            body: Container(
+              child: Scrollbar(
+                  child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(20),
+                            child: _hasParking
+                                ? InfoWithReservation(
+                                parkingNumber: _parkingNumber)
+                                : InfoWithoutReservation(
+                              onFindPressed: _onFindPressed,
+                            ),
+                          ),
+                          Container(
+                              decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(40.0),
+                                      topRight: Radius.circular(40.0))),
+                              child: Column(
+                                children: [
+                                  Consumer<AuctionModel>(
+                                      builder: (context, auction, child) {
+                                        return AuctionPage(auction);
+                                      }),
+                                  const SizedBox(height: 500)
+                                ],
+                              ))
+                        ],
+                      ))),
+            )));
   }
 }

@@ -53,6 +53,8 @@ class _MyAppState extends State<MyApp> {
     initData();
   }
 
+  bool _initialized = false;
+
   Future<void> initData() async {
     // Initialize parse
     await Parse().initialize(keyParseApplicationId, keyParseServerUrl,
@@ -70,13 +72,14 @@ class _MyAppState extends State<MyApp> {
       print(text);
     }
 
-    StaticModels.user = ParseUser('alirtofighim@gmail.com', '1234567', null);
-    await StaticModels.user!.login();
-
+    StaticModels.user = await ParseUser.currentUser();
     print(StaticModels.user);
     await initRepository();
-    print(StaticModels.auctionRepo);
-    print(StaticModels.auctionRepo!.getNew());
+
+    setState(() {
+    });
+
+
   }
 
   @override

@@ -1,26 +1,35 @@
 import 'package:copark/data/model/auction.dart';
 import 'package:copark/data/model/offer.dart';
+import 'package:copark/data/state/auction.dart';
 import 'package:copark/home/auction_participated.dart';
 import 'package:copark/home/auction_running.dart';
 import 'package:copark/home/auction_started.dart';
 import 'package:copark/static_models.dart';
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:provider/provider.dart';
 
 class AuctionPage extends StatefulWidget {
-  const AuctionPage({Key? key}) : super(key: key);
+  const AuctionPage(this.auctionModel, {Key? key}) : super(key: key);
+
+  final AuctionModel auctionModel;
 
   @override
-  _AuctionPageState createState() => _AuctionPageState();
+  // ignore: no_logic_in_create_state
+  _AuctionPageState createState() => _AuctionPageState(auctionModel);
 }
 
 class _AuctionPageState extends State<AuctionPage> {
+
+  final AuctionModel auctionModel;
   // todo
   var _isStarted = false;
   var _isUserParticipated = false;
   var _daysToStart = 20;
   var _bid = 1000;
   var _isLoading = true;
+
+  _AuctionPageState(this.auctionModel);
 
   @override
   void initState() {
@@ -29,28 +38,32 @@ class _AuctionPageState extends State<AuctionPage> {
   }
 
   Widget _getWidgetForCurrentState() {
-    if (_isLoading) {
-      return Container(
-          padding: const EdgeInsets.all(40),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Center(
-              child: CircularProgressIndicator(),
-            )
-          ]));
-    }
-    if (_isStarted) {
-      return AuctionRunning();
-    } else if (_isUserParticipated) {
-      return AuctionParticipated(bid: _bid);
-    } else {
-      return AuctionNotStarted(daysToStart: _daysToStart);
-    }
+    return Consumer<AuctionModel>(
+        builder: (context, auction, child)
+    {
+      if (_isLoading) {
+        return Container(
+            padding: const EdgeInsets.all(40),
+            child:
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Center(
+                child: CircularProgressIndicator(),
+              )
+            ]));
+      }
+      if (auction.isStarted) {
+        return AuctionRunning();
+      } else if (auction.isUserParticipated) {
+        return AuctionParticipated();
+      } else {
+        return AuctionNotStarted(daysToStart: _daysToStart);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(child: _getWidgetForCurrentState());
+    return _getWidgetForCurrentState();
   }
 
   Future<void> checkAuctionsStatus() async {
@@ -68,16 +81,18 @@ class _AuctionPageState extends State<AuctionPage> {
       if (responseOffer.result != null) {
         Offer? offer = responseOffer.result.first;
         if (offer != null) {
+          print('we have offer');
+          auctionModel.isUserParticipated = true;
+          auctionModel.isStarted = false;
+          auctionModel.bid = offer.price;
           setState(() {
-            _isUserParticipated = true;
-            _bid = offer.price;
             _isLoading = false;
           });
           return;
         }
       }
+      auctionModel.isStarted = true;
       setState(() {
-        _isStarted = true;
         _isLoading = false;
       });
       return;

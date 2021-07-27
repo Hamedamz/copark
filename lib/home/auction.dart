@@ -30,10 +30,15 @@ class _AuctionPageState extends State<AuctionPage> {
 
   Widget _getWidgetForCurrentState() {
     if (_isLoading) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      }
+      return Container(
+          padding: const EdgeInsets.all(40),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Center(
+              child: CircularProgressIndicator(),
+            )
+          ]));
+    }
     if (_isStarted) {
       return AuctionRunning();
     } else if (_isUserParticipated) {

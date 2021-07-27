@@ -1,3 +1,4 @@
+import 'package:copark/data/repositories/offer/repository_offer.dart';
 import 'package:copark/data/repositories/settings/repository_settings.dart';
 import 'package:copark/data/repositories/user/repository_user.dart';
 import 'package:flutter/foundation.dart';
@@ -10,6 +11,7 @@ class StaticModels extends ChangeNotifier {
   static AuctionRepository? _auctionRepo;
   static SettingsRepository? _settingsRepo;
   static UserRepository? _userRepo;
+  static OfferRepository? _offerRepo;
 
   static AuctionRepository? get auctionRepo => _auctionRepo;
   static set auctionRepo(AuctionRepository? auctionRepo) =>
@@ -25,5 +27,8 @@ class StaticModels extends ChangeNotifier {
   static UserRepository? get userRepo => _userRepo;
   static set userRepo(UserRepository? userRepo) =>
       _userRepo = userRepo;
+  static OfferRepository? get offerRepo => _offerRepo;
+  static set offerRepo(OfferRepository? offerRepo) =>
+      _offerRepo = offerRepo;
 
 }

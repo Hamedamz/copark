@@ -31,13 +31,7 @@ class SettingsRepository implements SettingsContract {
     if (fromDb) {
       return await db.get();
     }
-    ApiResponse response = await db.get();
-
-    if (response.success) {
-      return response;
-    }
-
-    response = await api.get();
+    ApiResponse response = await api.get();
 
     if (response.success) {
       await db.update(response.result);

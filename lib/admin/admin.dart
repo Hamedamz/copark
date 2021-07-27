@@ -1,4 +1,5 @@
 import 'package:copark/admin/auction_settings.dart';
+import 'package:copark/admin/user_bids.dart';
 import 'package:copark/admin/users_list.dart';
 import 'package:flutter/material.dart';
 
@@ -46,9 +47,7 @@ class _AdminPageState extends State<AdminPage> {
           children: <Widget>[
             AuctionSettings(),
             UsersList(),
-            Center(
-              child: Text("It's sunny here"),
-            ),
+            UserBids()
           ],
         ),
       ),

@@ -11,8 +11,22 @@ class AuctionParticipated extends StatelessWidget {
             child: Column(
                 children: [
                   const Text('شما در مزایده شرکت کرده‌اید'),
+                  const SizedBox(height: 20),
                   const Text('قیمت پیشنهادی شما'),
-                  Text(bid.toString()),
+                  const SizedBox(height: 20),
+                  Text(
+                      bid.toString(),
+                      style: const TextStyle(
+                        color: Colors.green,
+                        fontSize: 36,
+                      ),
+                  ),
+                  const Text(
+                    'تومان',
+                    style: TextStyle(
+                      color: Colors.green,
+                    ),
+                  ),
                 ]
             )
         )

@@ -20,6 +20,7 @@ class _AuctionPageState extends State<AuctionPage> {
   var _isUserParticipated = false;
   var _daysToStart = 20;
   var _bid = 1000;
+  var _isLoading = true;
 
   @override
   void initState() {
@@ -28,6 +29,11 @@ class _AuctionPageState extends State<AuctionPage> {
   }
 
   Widget _getWidgetForCurrentState() {
+    if (_isLoading) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
     if (_isStarted) {
       return AuctionRunning();
     } else if (_isUserParticipated) {
@@ -46,23 +52,28 @@ class _AuctionPageState extends State<AuctionPage> {
     QueryBuilder<Auction> queryAuction = QueryBuilder(Auction())
       ..whereEqualTo('status', 'new');
     ParseResponse responseAuction = await queryAuction.query();
-    Auction? auction = responseAuction.result.first;
-    if (auction != null) {
-      StaticModels.newAuction = auction;
+    Auction? newAuction = responseAuction.result.first;
+
+    if (newAuction != null) {
+      QueryBuilder<Offer> queryOffer = QueryBuilder(Offer())
+        ..whereEqualTo('auction', newAuction)
+        ..whereEqualTo('user', StaticModels.user);
+      StaticModels.newAuction = newAuction;
+      ParseResponse responseOffer = await queryOffer.query();
+      if (responseOffer.result != null) {
+        Offer? offer = responseOffer.result.first;
+        if (offer != null) {
+          setState(() {
+            _isUserParticipated = true;
+            _bid = offer.price;
+            _isLoading = false;
+          });
+          return;
+        }
+      }
       setState(() {
         _isStarted = true;
-      });
-      return;
-    }
-    QueryBuilder<Offer> queryOffer = QueryBuilder(Offer())
-      ..whereEqualTo('auction', StaticModels.newAuction)
-      ..whereEqualTo('user', StaticModels.user);
-    ParseResponse responseOffer = await queryOffer.query();
-    Offer? offer = responseOffer.result.first;
-    if (offer != null) {
-      setState(() {
-        _isUserParticipated = true;
-        _bid = offer.price;
+        _isLoading = false;
       });
       return;
     }

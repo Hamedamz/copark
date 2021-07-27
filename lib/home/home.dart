@@ -15,9 +15,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // todo
-  var _hasParking = false;
-  var _parkingNumber = '101';
-
+  bool _hasParking = false;
+  num _parkingNumber = 0;
   bool _isAdmin = false;
 
   void _onFindPressed() {
@@ -51,7 +50,20 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     setAdminStatus();
+    getParkingStatus();
     super.initState();
+  }
+
+  Future<void> getParkingStatus() async {
+    ParseCloudFunction function = ParseCloudFunction('myParkPlace');
+    ParseResponse response = await function.execute();
+    if (response.result == null || (response.result as Map).isEmpty) {
+      return;
+    }
+    setState(() {
+      _hasParking = true;
+      _parkingNumber = response.result['number'];
+    });
   }
 
   Future<void> setAdminStatus() async {

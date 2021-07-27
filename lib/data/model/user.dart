@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
+
 class User extends ParseUser implements ParseCloneable {
   User(String? username, String? password, String? emailAddress)
       : super(username, password, emailAddress);
@@ -12,8 +13,13 @@ class User extends ParseUser implements ParseCloneable {
   User clone(Map<String, dynamic> map) => User.clone()..fromJson(map);
 
   static const String keyName = 'Name';
+  static const String keyIsActive = 'isActive';
 
   String? get name => get<String?>(keyName);
 
   set name(String? name) => set<String?>(keyName, name);
+
+  bool get isActive => get<bool>(keyIsActive)!;
+
+  set isActive(bool isActive) => set<bool>(keyIsActive, isActive);
 }

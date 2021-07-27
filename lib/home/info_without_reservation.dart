@@ -10,10 +10,27 @@ class InfoWithoutReservation extends StatelessWidget {
         child: Center(
             child: Column(
                 children: [
-                  const Text('در این دوره پارکینگی را رزرو نکرده‌اید.'),
-                  MaterialButton(
+                  Image.asset('assets/images/no-parking.png', height: 100,),
+                  const SizedBox(height: 20,),
+                  const Text(
+                    'در این دوره پارکینگی را رزرو نکرده‌اید.',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  const SizedBox(height: 20,),
+                  TextButton(
+                    style: ButtonStyle(
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                                side: BorderSide(color: Colors.white),
+                            )
+                        )
+                    ),
                     onPressed: onFindPressed,
-                    child: const Text('یافتن پارکینگ خالی'),
+                    child: const Text(
+                      'یافتن پارکینگ خالی',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   )
                 ]
             )

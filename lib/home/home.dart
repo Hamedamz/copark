@@ -1,4 +1,3 @@
-import 'package:copark/account/login_screen.dart';
 import 'package:copark/admin/admin.dart';
 import 'package:copark/home/auction.dart';
 import 'package:copark/home/info_with_reservation.dart';
@@ -60,7 +59,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-
   @override
   void initState() {
     setAdminStatus();
@@ -100,15 +98,40 @@ class _HomePageState extends State<HomePage> {
             IconButton(onPressed: _onLogoutPressed, icon: Icon(Icons.logout)),
           ],
         ),
-        body: Column(
-          children: [
-            _hasParking
-                ? InfoWithReservation(parkingNumber: _parkingNumber)
-                : InfoWithoutReservation(
-                    onFindPressed: _onFindPressed,
-                  ),
-            const AuctionPage(),
-          ],
-        ));
+        backgroundColor: Colors.blue,
+        body: Container(
+          child: Scrollbar(
+              child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(20),
+                        child: _hasParking
+                            ? InfoWithReservation(parkingNumber: _parkingNumber)
+                            : InfoWithoutReservation(
+                          onFindPressed: _onFindPressed,
+                        ),
+                      ),
+
+                      Container(
+                          decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(40.0),
+                                  topRight: Radius.circular(40.0))),
+                          child: Column(
+                            children: [
+                              const AuctionPage(),
+                              const SizedBox(height: 500)
+                            ],
+                          )
+                      )
+                    ],
+                  )
+              )
+          ),
+        )
+
+    );
   }
 }

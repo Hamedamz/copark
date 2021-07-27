@@ -16,19 +16,48 @@ class InfoWithReservation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         child: Center(
-            child: Column(
+            child: Column(children: [
+              const Text(
+                  'شماره پارکینگ شما',
+                style: TextStyle(color: Colors.white),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('شماره پارکینگ شما'),
-                  Text(parkingNumber.toString()),
-                  MaterialButton(
-                    onPressed: () => {
-                    setUnreserved()
-                  },
-                    child: const Text('امروز نمیام'),
+                  Text(
+                    parkingNumber.toString(),
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 70,
+                    ),
+                  ),
+                  Icon(
+                    Icons.local_parking,
+                    color: Colors.green.shade300,
+                    size: 60,
                   )
-                ]
-            )
-        )
+                ],
+              ),
+              const SizedBox(height: 20),
+              TextButton(
+                style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  side: BorderSide(color: Colors.white),
+                ))),
+                onPressed: () => {
+                  setUnreserved()
+                },
+                child: const Text(
+                    'امروز نمیام',
+                    style: TextStyle(color: Colors.white),
+              ),
+              )
+            ]
+          )
+       )
     );
   }
 }

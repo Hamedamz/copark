@@ -11,12 +11,20 @@ class AuctionNotStarted extends StatelessWidget {
             child: Column(
                 children: [
                   const Text('مزایده هنوز شروع نشده است'),
+                  const SizedBox(height: 20,),
                   Row(
                     children: [
-                      Text(daysToStart.toString()),
+                      Text(
+                          daysToStart.toString(),
+                          style: const TextStyle(
+                            color: Colors.green,
+                            fontSize: 36,
+                          ),
+                      ),
                       const Text('روز'),
                     ],
                   ),
+                  const SizedBox(height: 20,),
                   const Text('مانده تا مزایده‌ی بعدی'),
                 ]
             )

@@ -1,5 +1,6 @@
 import 'package:copark/data/db.dart';
 import 'package:copark/data/repositories/auction/repository_auction.dart';
+import 'package:copark/data/repositories/offer/repository_offer.dart';
 import 'package:copark/data/repositories/settings/repository_settings.dart';
 import 'package:copark/data/repositories/user/repository_user.dart';
 import 'package:copark/settings/parse.dart';
@@ -106,6 +107,7 @@ class _MyAppState extends State<MyApp> {
     StaticModels.auctionRepo ??= AuctionRepository.init(await getDB());
     StaticModels.settingsRepo ??= SettingsRepository.init(await getDB());
     StaticModels.userRepo ??= UserRepository.init();
+    StaticModels.offerRepo ??= OfferRepository.init();
   }
 }
 

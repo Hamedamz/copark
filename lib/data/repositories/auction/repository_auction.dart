@@ -32,7 +32,7 @@ class AuctionRepository implements AuctionContract {
     }
     final ApiResponse response = await api.getNew();
 
-    if (response.success) {
+    if (response.success && response.results != null) {
       await db.updateAll(response.results!);
     }
     return response;
@@ -82,7 +82,7 @@ class AuctionRepository implements AuctionContract {
     }
 
     ApiResponse response = await api.updateAll(items);
-    if (response.success) {
+    if (response.success && response.results != null) {
       response = await db.updateAll(response.results!);
     }
 

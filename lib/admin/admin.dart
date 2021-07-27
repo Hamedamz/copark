@@ -47,7 +47,7 @@ class _AdminPageState extends State<AdminPage> {
           children: <Widget>[
             AuctionSettings(),
             UsersList(),
-            UserBids()
+            UserOffers()
           ],
         ),
       ),

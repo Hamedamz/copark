@@ -4,6 +4,7 @@ import 'package:copark/home/info_with_reservation.dart';
 import 'package:copark/home/info_without_reservation.dart';
 import 'package:copark/home/parking.dart';
 import 'package:flutter/material.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -17,11 +18,12 @@ class _HomePageState extends State<HomePage> {
   var _hasParking = false;
   var _parkingNumber = '101';
 
+  bool _isAdmin = false;
+
   void _onFindPressed() {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (BuildContext context) {
-
           return Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.grey.shade900,
@@ -39,34 +41,47 @@ class _HomePageState extends State<HomePage> {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (BuildContext context) {
-
           return AdminPage();
         },
       ),
     );
   }
 
+
+  @override
+  void initState() {
+    setAdminStatus();
+    super.initState();
+  }
+
+  Future<void> setAdminStatus() async {
+    ParseCloudFunction function = ParseCloudFunction('isAdmin');
+    ParseResponse response = await function.execute();
+    setState(() {
+      _isAdmin = response.result > 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        actions: [
-          IconButton(
-              onPressed: _onAdminPressed,
-              icon: Icon(Icons.settings)
-          )
-        ],
-      ),
-      body: Column(
-        children: [
-          _hasParking ?
-          InfoWithReservation(parkingNumber: _parkingNumber) :
-          InfoWithoutReservation(onFindPressed: _onFindPressed,),
-          const AuctionPage(),
-        ],
-      )
-    );
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: [
+            if (_isAdmin)
+              IconButton(onPressed: _onAdminPressed, icon: Icon(Icons.settings))
+          ],
+        ),
+        body: Column(
+          children: [
+            _hasParking
+                ? InfoWithReservation(parkingNumber: _parkingNumber)
+                : InfoWithoutReservation(
+                    onFindPressed: _onFindPressed,
+                  ),
+            const AuctionPage(),
+          ],
+        ));
   }
 }

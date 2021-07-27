@@ -1,5 +1,7 @@
+import 'package:copark/data/model/park_place.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class Parking extends StatefulWidget {
   const Parking({Key? key}) : super(key: key);
@@ -9,26 +11,15 @@ class Parking extends StatefulWidget {
 }
 
 class _ParkingState extends State<Parking> {
-  final List<ParkingSlot> _parking = [
-    ParkingSlot(number: 1, state: ParkingState.free),
-    ParkingSlot(number: 2, state: ParkingState.full),
-    ParkingSlot(number: 3, state: ParkingState.full),
-    ParkingSlot(number: 4, state: ParkingState.reserved),
-    ParkingSlot(number: 5, state: ParkingState.full),
-    ParkingSlot(number: 6, state: ParkingState.free),
-    ParkingSlot(number: 7, state: ParkingState.full),
-    ParkingSlot(number: 8, state: ParkingState.full),
-    ParkingSlot(number: 9, state: ParkingState.free),
-    ParkingSlot(number: 10, state: ParkingState.full),
-    ParkingSlot(number: 11, state: ParkingState.free),
-  ];
+  List<ParkPlace>? _parking = null;
 
   final textStyle = const TextStyle(color: Colors.white);
+  String message = '';
 
   Widget _buildParkingCols() {
     return ListView.separated(
       padding: const EdgeInsets.all(16.0),
-      itemCount: (_parking.length / 2).ceil(),
+      itemCount: (_parking!.length / 2).ceil(),
       itemBuilder: (context, i) {
         final index = i * 2;
         return _buildParkingSlot(index);
@@ -64,7 +55,7 @@ class _ParkingState extends State<Parking> {
             child: Row(
           children: [
             Text(
-              _parking[index].number.toString(),
+              _parking![index].number.toString(),
               textAlign: TextAlign.right,
               style: textStyle,
             ),
@@ -80,7 +71,7 @@ class _ParkingState extends State<Parking> {
                 ? const BorderRadius.only(
                     topLeft: Radius.circular(15.0),
                     topRight: Radius.circular(15.0))
-                : index == ((_parking.length - 1) / 2).ceil() * 2
+                : index == ((_parking!.length - 1) / 2).ceil() * 2
                     ? const BorderRadius.only(
                         bottomLeft: Radius.circular(15.0),
                         bottomRight: Radius.circular(15.0))
@@ -88,12 +79,12 @@ class _ParkingState extends State<Parking> {
           ),
         ),
         Expanded(
-          child: index + 1 < _parking.length
+          child: index + 1 < _parking!.length
               ? Row(
                   children: [
                     Expanded(child: _buildSingleParkSlot(index + 1)),
                     Text(
-                      _parking[index + 1].number.toString(),
+                      _parking![index + 1].number.toString(),
                       textAlign: TextAlign.left,
                       style: textStyle,
                     ),
@@ -106,20 +97,12 @@ class _ParkingState extends State<Parking> {
   }
 
   Widget _buildSingleParkSlot(index) {
-    var imagePath = _parking[index].state == ParkingState.full
-        ? 'assets/images/car-top-view.png'
-        : 'assets/images/car-top-view-grey.png';
-
-    var message = _parking[index].state == ParkingState.full
-        ? 'این پارکینگ پر است'
-        : _parking[index].state == ParkingState.reserved
-        ? 'این پارکینگ رزور شده است'
-        : 'روزو انجام شد';
+    var imagePath = 'assets/images/car-top-view.png';
 
     return TextButton(
         onPressed: () {
-          if (_parking[index].state == ParkingState.free) {
-            // todo handle reserve
+          if (_parking![index].owner == null) {
+            reserveParkPlace(index);
           }
 
           ScaffoldMessenger.of(context).showSnackBar(
@@ -134,7 +117,7 @@ class _ParkingState extends State<Parking> {
             ),
           );
         },
-        child: _parking[index].state == ParkingState.free
+        child: _parking![index].owner == null
             ? const Text('رزرو')
             : RotatedBox(
                 quarterTurns: index.isOdd ? 1 : -1,
@@ -147,18 +130,47 @@ class _ParkingState extends State<Parking> {
 
   @override
   Widget build(BuildContext context) {
+    if (_parking == null) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return Container(
       color: Colors.grey.shade800,
       child: _buildParkingCols(),
     );
   }
+
+  @override
+  void initState() {
+    super.initState();
+    getParkList();
+  }
+
+  Future<void> reserveParkPlace(int index) async {
+    ParseCloudFunction function = ParseCloudFunction('reserveParkPlace');
+    ParseResponse response =
+        await function.execute(parameters: {'number': index + 1});
+    ParseUser user = await ParseUser.currentUser();
+    if (response.success) {
+      setState(() {
+        message = 'رزرو انجام شد';
+        _parking![index].owner = user;
+      });
+    } else {
+      setState(() {
+        message = response.error!.message;
+      });
+    }
+  }
+
+  Future<void> getParkList() async {
+    QueryBuilder<ParkPlace> query = QueryBuilder(ParkPlace())
+      ..whereEqualTo('isActive', true);
+    ParseResponse response = await query.query();
+    print(response);
+    setState(() {
+      _parking = response.results!.cast<ParkPlace>();
+    });
+  }
 }
-
-class ParkingSlot {
-  ParkingSlot({required this.number, required this.state});
-
-  int number;
-  ParkingState state;
-}
-
-enum ParkingState { free, reserved, full }

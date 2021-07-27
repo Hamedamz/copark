@@ -18,8 +18,8 @@ class ParkPlace extends ParseObject implements ParseCloneable {
   num get number => get<num>(keyNumber)!;
   set number(num number) => set<num>(keyNumber, number);
 
-  ParseUser get owner => get<ParseUser>(keyOwner)!;
-  set owner(ParseUser owner) => set<ParseUser>(keyOwner, owner);
+  ParseUser? get owner => get<ParseUser?>(keyOwner);
+  set owner(ParseUser? owner) => set<ParseUser?>(keyOwner, owner);
 
   bool get isActive => get<bool>(keyActive)!;
   set isActive(bool isActive) => set<bool>(keyActive, isActive);

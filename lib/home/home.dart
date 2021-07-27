@@ -18,6 +18,7 @@ class _HomePageState extends State<HomePage> {
   bool _hasParking = false;
   num _parkingNumber = 0;
   bool _isAdmin = false;
+  bool _isLoading = true;
 
   void _onFindPressed() {
     Navigator.of(context).push(
@@ -57,11 +58,15 @@ class _HomePageState extends State<HomePage> {
     ParseCloudFunction function = ParseCloudFunction('myParkPlace');
     ParseResponse response = await function.execute();
     if (response.result == null || (response.result as Map).isEmpty) {
+      setState(() {
+        _isLoading = false;
+      });
       return;
     }
     setState(() {
       _hasParking = true;
       _parkingNumber = response.result['number'];
+      _isLoading = false;
     });
   }
 
@@ -75,6 +80,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,

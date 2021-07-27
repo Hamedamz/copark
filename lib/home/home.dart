@@ -1,3 +1,4 @@
+import 'package:copark/account/login_screen.dart';
 import 'package:copark/admin/admin.dart';
 import 'package:copark/home/auction.dart';
 import 'package:copark/home/info_with_reservation.dart';
@@ -40,9 +41,22 @@ class _HomePageState extends State<HomePage> {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (BuildContext context) {
-          return AdminPage();
+          return const AdminPage();
         },
       ),
+    );
+  }
+
+  void _onLogoutPressed() async {
+    final ParseUser user = await ParseUser.currentUser();
+    await user.logout();
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          return const LoginScreen();
+        },
+      ),
+        (route) => false,
     );
   }
 
@@ -81,7 +95,8 @@ class _HomePageState extends State<HomePage> {
           elevation: 0,
           actions: [
             if (_isAdmin)
-              IconButton(onPressed: _onAdminPressed, icon: Icon(Icons.settings))
+              IconButton(onPressed: _onAdminPressed, icon: Icon(Icons.settings)),
+            IconButton(onPressed: _onLogoutPressed, icon: Icon(Icons.logout)),
           ],
         ),
         backgroundColor: Colors.blue,

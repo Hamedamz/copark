@@ -12,6 +12,8 @@ import '../users.dart';
 class LoginScreen extends StatelessWidget {
   static const routeName = '/auth';
 
+  const LoginScreen({Key? key}) : super(key: key);
+
   Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
 
   Future<String?> _loginUser(LoginData data) {

@@ -1,5 +1,5 @@
 import 'package:copark/admin/auction_settings.dart';
-import 'package:copark/admin/user_bids.dart';
+import 'package:copark/admin/user_offers.dart';
 import 'package:copark/admin/users_list.dart';
 import 'package:flutter/material.dart';
 

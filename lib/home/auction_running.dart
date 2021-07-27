@@ -6,32 +6,35 @@ class AuctionRunning extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: Center(
-            child: Column(
-                children: [
-                  const Text('مزایده در حال برگزاری است'),
-                  const Text('مبلغ پیشنهادی خود را وارد کنید'),
-                  TextFormField(
-                    restorationId: 'bid',
-                    textInputAction: TextInputAction.go,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'قیمت پیشنهادی',
-                      suffixText: 'تومان'
-                    ),
-                  ),
-                  MaterialButton(
-                    color: Colors.blue,
-                    onPressed: () => {
-                      //todo participate in auction
-                    },
-                    minWidth: 400,
-                    child: const Text('شرکت در مزایده'),
-                  )
-                ]
-            )
-        )
-    );
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+          const Text('مزایده در حال برگزاری است'),
+          const SizedBox(height: 10),
+          const Text('مبلغ پیشنهادی خود را وارد کنید'),
+          const SizedBox(height: 20),
+          TextFormField(
+            restorationId: 'bid',
+            textInputAction: TextInputAction.go,
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'قیمت پیشنهادی',
+                suffixText: 'تومان'),
+          ),
+          const SizedBox(height: 20),
+          MaterialButton(
+            color: Colors.blue,
+            onPressed: () => {
+              //todo participate in auction
+            },
+            minWidth: 400,
+            elevation: 0,
+            height: 50,
+            textColor: Colors.white,
+            child: const Text('شرکت در مزایده'),
+          )
+        ]));
   }
 }

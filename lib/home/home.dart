@@ -47,7 +47,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-
   @override
   void initState() {
     setAdminStatus();
@@ -73,15 +72,40 @@ class _HomePageState extends State<HomePage> {
               IconButton(onPressed: _onAdminPressed, icon: Icon(Icons.settings))
           ],
         ),
-        body: Column(
-          children: [
-            _hasParking
-                ? InfoWithReservation(parkingNumber: _parkingNumber)
-                : InfoWithoutReservation(
-                    onFindPressed: _onFindPressed,
-                  ),
-            const AuctionPage(),
-          ],
-        ));
+        backgroundColor: Colors.blue,
+        body: Container(
+          child: Scrollbar(
+              child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(20),
+                        child: _hasParking
+                            ? InfoWithReservation(parkingNumber: _parkingNumber)
+                            : InfoWithoutReservation(
+                          onFindPressed: _onFindPressed,
+                        ),
+                      ),
+
+                      Container(
+                          decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(40.0),
+                                  topRight: Radius.circular(40.0))),
+                          child: Column(
+                            children: [
+                              const AuctionPage(),
+                              const SizedBox(height: 500)
+                            ],
+                          )
+                      )
+                    ],
+                  )
+              )
+          ),
+        )
+
+    );
   }
 }

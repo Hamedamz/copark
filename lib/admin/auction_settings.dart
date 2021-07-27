@@ -12,109 +12,147 @@ class AuctionSettings extends StatefulWidget {
 }
 
 class _AuctionSettingsState extends State<AuctionSettings> {
-  Settings? settings;
+  Settings? _settings;
+  final TextEditingController _minimumPriceController =
+      TextEditingController(text: '0');
+  final TextEditingController _parkCountController =
+      TextEditingController(text: '0');
+  final TextEditingController _auctionInprogressDaysController =
+      TextEditingController(text: '0');
+  final TextEditingController _auctionNewDaysController =
+      TextEditingController(text: '0');
+
+  @override
+  void initState() {
+    super.initState();
+    prepareSettings();
+  }
 
   @override
   Widget build(BuildContext context) {
-    prepareSettings();
-
-    var _minimumPrice = settings == null ? 0 : settings?.minimumPrice;
-    var _parkCount = settings == null ? 0 : settings?.parkCount;
-    var _auctionInprogressDays =
-        settings == null ? 0 : settings?.auctionInprogressDays;
-    var _auctionNewDays = settings == null ? 0 : settings?.auctionNewDays;
-    // return Center(
-    //       child: Column(children: [
-    //         Text(
-    //             'حداقل قیمت: ${settings == null ? 0 : settings!.minimumPrice}   ریال'),
-    //         Text('تعداد پارکینگ‌ها: ${settings == null ? 0 : settings!.parkCount}')
-    //       ]),
-    //     );
-    return Container(
-      child: Scrollbar(
-        child: SingleChildScrollView(
-            padding: new EdgeInsets.all(20.0),
-            child: Column(children: [
-              ...[
-                TextFormField(
-                  restorationId: 'min_price',
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.number,
-                  initialValue: _minimumPrice.toString(),
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'حداقل قیمت',
-                      suffixText: 'تومان'),
-                ),
-                TextFormField(
-                  restorationId: 'parking_count',
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.number,
-                  initialValue: _parkCount.toString(),
-                  decoration: const InputDecoration(
+    if (_settings == null) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    return Scrollbar(
+      child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(children: [
+            ...[
+              TextFormField(
+                restorationId: 'min_price',
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.number,
+                controller: _minimumPriceController,
+                onChanged: (value) {
+                  final num? number = num.tryParse(value);
+                  if (number != null) {
+                    _settings?.minimumPrice = number;
+                  }
+                },
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'تعداد پارکینگ',
-                  ),
+                    labelText: 'حداقل قیمت',
+                    suffixText: 'تومان'),
+              ),
+              TextFormField(
+                restorationId: 'parking_count',
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.number,
+                controller: _parkCountController,
+                onChanged: (value) {
+                  final num? number = num.tryParse(value);
+                  if (number != null) {
+                    _settings?.parkCount = number;
+                  }
+                },
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'تعداد پارکینگ',
                 ),
-                TextFormField(
-                  restorationId: 'progress_days',
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.number,
-                  initialValue: _auctionInprogressDays.toString(),
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'طول مزایده',
-                      suffixText: 'روز'),
-                ),
-                TextFormField(
-                  restorationId: 'new_days',
-                  textInputAction: TextInputAction.go,
-                  keyboardType: TextInputType.number,
-                  initialValue: _auctionNewDays.toString(),
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'فاصله‌ی بین دو مزایده',
-                      suffixText: 'روز'),
-                ),
-                MaterialButton(
-                  color: Colors.blue.shade600,
-                  onPressed: () => {
-                    //todo save changes
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('تغییرات ذخیره شد'),
-                        backgroundColor: Colors.green,
-                      ),
-                    )
-                  },
-                  textColor: Colors.white,
-                  height: 50,
-                  elevation: 0,
-                  minWidth: 400,
-                  child: const Text('ذخیره تغییرات'),
-                )
-              ].expand(
-                (widget) => [
-                  widget,
-                  const SizedBox(
-                    height: 24,
-                  )
-                ],
+              ),
+              TextFormField(
+                restorationId: 'progress_days',
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.number,
+                controller: _auctionInprogressDaysController,
+                onChanged: (value) {
+                  final num? number = num.tryParse(value);
+                  if (number != null) {
+                    _settings?.auctionInprogressDays = number;
+                  }
+                },
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'طول مزایده',
+                    suffixText: 'روز'),
+              ),
+              TextFormField(
+                restorationId: 'new_days',
+                textInputAction: TextInputAction.go,
+                keyboardType: TextInputType.number,
+                controller: _auctionNewDaysController,
+                onChanged: (value) {
+                  final num? number = num.tryParse(value);
+                  if (number != null) {
+                    _settings?.auctionNewDays = number;
+                  }
+                },
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'فاصله‌ی بین دو مزایده',
+                    suffixText: 'روز'),
+              ),
+              MaterialButton(
+                color: Colors.blue.shade600,
+                onPressed: () => {saveSetting()},
+                textColor: Colors.white,
+                height: 50,
+                elevation: 0,
+                minWidth: 400,
+                child: const Text('ذخیره تغییرات'),
               )
-            ])),
-      ),
+            ].expand(
+              (widget) => [
+                widget,
+                const SizedBox(
+                  height: 24,
+                )
+              ],
+            )
+          ])),
     );
   }
 
-  void showSettings(Settings settings) {
-    settings.pin();
+  void prepareSettings() async {
+    ApiResponse response = await StaticModels.settingsRepo!.get();
     setState(() {
-      this.settings = settings;
+      _settings = response.result;
+      _auctionInprogressDaysController.text =
+          '${_settings!.auctionInprogressDays}';
+      _auctionNewDaysController.text = '${_settings!.auctionNewDays}';
+      _minimumPriceController.text = '${_settings!.minimumPrice}';
+      _parkCountController.text = '${_settings!.parkCount}';
     });
   }
 
-  void prepareSettings() {
-    Future<ApiResponse> response = StaticModels.settingsRepo!.get();
-    response.then((value) => {showSettings(value.result)});
+  saveSetting() async {
+    final response = await _settings!.save();
+    if (response.success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('تغییرات ذخیره شد'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('تغییرات ذخیره نشد'),
+          backgroundColor: Colors.redAccent,
+        ),
+      );
+    }
   }
 }

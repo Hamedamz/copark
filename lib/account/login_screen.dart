@@ -67,7 +67,7 @@ class LoginScreen extends StatelessWidget {
       navigateBackAfterRecovery: true,
       // hideProvidersTitle: false,
       // loginAfterSignUp: false,
-      // hideForgotPasswordButton: true,
+      hideForgotPasswordButton: true,
       // hideSignUpButton: true,
       // disableCustomPageTransformer: true,
       messages: LoginMessages(
@@ -88,7 +88,7 @@ class LoginScreen extends StatelessWidget {
       ),
       theme: LoginTheme(
         primaryColor: Colors.blueAccent,
-        accentColor: Colors.pink,
+        accentColor: Colors.white,
         errorColor: Colors.red.shade600,
         pageColorLight: Colors.blue.shade400,
         pageColorDark: Colors.indigoAccent,
@@ -129,7 +129,7 @@ class LoginScreen extends StatelessWidget {
         return _recoverPassword(name);
         // Show new password dialog
       },
-      showDebugButtons: true,
+      showDebugButtons: false,
     );
   }
 }
